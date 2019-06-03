@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="../common.js"></script>
+    <script>
+      $(document).ready(function(){
+          var audio_test = new Audio('http://users.content.ytmnd.com/b/d/5/bd5a043ff611270fda719e5b10c72a2a.wav');
+
+          console.max('Audio SRC set');
+
+          audio_test.load();
+          audio_test.loop = true;
+
+          audio_test.addEventListener('loadeddata', () => {
+              console.max('Audio data loaded');
+              $('#duration').html(audio_test.duration);
+          });
+
+          audio_test.addEventListener('timeupdate', () => {
+              $('#current_time').html(audio_test.currentTime);
+          });
+
+          audio_test.addEventListener('loadeddata', () => {
+              $('#play_link').click(function(e){
+                  console.max('User hit play');
+                  e.preventDefault();
+                  audio_test.play();
+              });
+          });
+
+          audio_test.addEventListener('ended', () => {
+              console.max('Audio playback ended.');
+          });
+
+          audio_test.addEventListener('play', () => {
+              console.max('Audio playback started.');
+          });
+      });
+    </script>
+  </head>
+  <body>
+    <a href="#" id="play_link">Play</a>
+    <div id="sound_data">
+      <span>Current Time: <span id="current_time">0:00</span> / <span id="duration">0:00</span></span>
+    </div>
+  </body>
+</html>

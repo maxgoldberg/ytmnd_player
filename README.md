@@ -29,9 +29,10 @@ Somewhat unsurprisingly, modern browsers don't like website to just start playin
 
 #### Relevant Links:
 1. https://developers.google.com/web/updates/2017/09/autoplay-policy-changes
-2. https://stackoverflow.com/questions/50490304/how-to-make-audio-autoplay-on-chrome
-3. [Proof-of-concept to avoid autoplay block](https://getaway.pizza/ugh/)
-4. [Malware site that avoids autoplay block](https://productdesigning-online.gq/Call-for-SecurityCH-Issues18554289769/)
+2. https://sites.google.com/a/chromium.org/dev/audio-video/autoplay
+3. https://stackoverflow.com/questions/50490304/how-to-make-audio-autoplay-on-chrome
+4. [Proof-of-concept to avoid autoplay block](https://getaway.pizza/ugh/)
+5. [Malware site that avoids autoplay block](https://productdesigning-online.gq/Call-for-SecurityCH-Issues18554289769/)
 
 
 ## Gapless Playback
@@ -39,11 +40,11 @@ One major issue we're currently seeing is gapless audio on HTML5 is not working 
 
 #### Relevant Links:
 1. [Good test site which should have perfect gapless WAV audio](http://banned.ytmnd.com)
-2. https://twitter.com/jaffathecake/status/807177367307358208
-3. https://lists.w3.org/Archives/Public/public-whatwg-archive/2014Oct/0238.html
-4. https://github.com/regosen/Gapless-5
-5. https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode/loop
-
+2. https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
+3. https://twitter.com/jaffathecake/status/807177367307358208
+4. https://lists.w3.org/Archives/Public/public-whatwg-archive/2014Oct/0238.html
+5. https://github.com/regosen/Gapless-5
+6. https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode/loop
 
 ## Synchronization
 One of the original reasons for the Flash preloader was to achieve perfect sync between sound and visuals. Many sites used to synchronize at different speeds on different browsers, and many are probably broken on the HTML5 preloader. This area needs more exploration, as I haven't really done much research into _how_ broken this is. It is much less noticeable on high-speed connections, but testing needs to be done on both slow connections and mobile.

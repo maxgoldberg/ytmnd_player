@@ -1,0 +1,107 @@
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="../common.js"></script>
+    <script>
+      $(document).ready(function(){
+
+          console.max('Document ready, starting AudioContext.');
+
+          /**
+           * Create an AudioContext and an XHR to load the audio. AudioContext appears to start playing (silence) on
+           * instantiation, which chrome throws warnings for, but I'm ignoring them for now.
+           */
+
+          var audio_context = new (window.AudioContext || window.webkitAudioContext)();
+          var audio_source  = audio_context.createBufferSource();
+          var audio_xhr     = new XMLHttpRequest();
+          var audio_data    = null;
+          var can_autoplay  = false;
+
+          /**
+           * At this point we can tell if autoplay is disabled by the browser by looking at the state
+           */
+
+          if (audio_context.state == 'running') {
+            can_autoplay = true;
+          }
+
+          console.max('audio_context state:', audio_context.state);
+          console.max('can_autoplay:', can_autoplay);
+
+          /**
+           * Suspend the AudioContext, we can start it back up later.
+           */
+
+          audio_context.suspend();
+
+          /**
+           * Load a gapless sound with an XMLHttpRequest.
+           *
+           * Gapless MP3: audio_xhr.open('GET', 'http://content.ytmnd.com/assets/sound/Blues-Loop.mp3', true);
+           */
+
+          audio_xhr.open('GET', 'http://users.content.ytmnd.com/b/d/5/bd5a043ff611270fda719e5b10c72a2a.wav', true);
+          audio_xhr.responseType = 'arraybuffer';
+
+          /**
+           * Here is where we'd add progress indicators/a pretty loader, but for the PoC, we'll skip all that.
+           */
+
+          audio_xhr.onload = function () {
+              console.max('Audio XHR onload fired.');
+              audio_data = audio_xhr.response;
+              audio_context.decodeAudioData(audio_data, function(audio_buffer) {
+                  console.max('Audio context decoded.');
+                  audio_source.buffer = audio_buffer;
+                  audio_source.connect(audio_context.destination);
+                  audio_source.loop = true;
+                  $('#duration').html(audio_source.buffer.duration);
+                  console.max('AudioBufferSourceNode:', audio_source);
+                  audio_source.onended = function() { console.max('Audio buffer ended.'); };
+                  window.setInterval(function(){ $('#current_time').html(audio_source.context.currentTime); }, 50);
+
+                  /**
+                   * Start the audio buffer, and if we can autoplay, start that too.
+                   */
+
+                  audio_source.start(0);
+
+                  if (can_autoplay == true) {
+                    audio_context.resume();
+                  }
+                });
+
+
+              /**
+               * Make the play/stop links work.
+               */
+
+              $('#play_link').click(function(e){
+                  console.max('User hit play');
+                  e.preventDefault();
+                  audio_context.resume();
+              });
+
+              $('#stop_link').click(function(e){
+                  console.max('User hit stop');
+                  e.preventDefault();
+                  audio_context.suspend();
+              });
+
+          };
+
+          console.max('Ateempting to load audio via XHR.');
+          audio_xhr.send();
+          console.max('Audio request sent.');
+      });
+    </script>
+  </head>
+  <body>
+    <a href="#" id="play_link">Play</a>
+    <a href="#" id="stop_link">Stop</a>
+    <div id="sound_data">
+      <span>Current Time: <span id="current_time">0:00</span> / <span id="duration">0:00</span></span>
+    </div>
+  </body>
+</html>
