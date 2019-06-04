@@ -62,7 +62,7 @@ ytmnd.timestamp.prototype.toString = function()
 ytmnd.timestamp.prototype.int_pad = function(source, target_length)
 {
   if (typeof target_length == 'undefined') {
-    var target_length = 2;
+    var target_length = 3;
   }
 
   source = source.toString();

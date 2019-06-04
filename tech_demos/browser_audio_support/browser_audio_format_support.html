@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="../common.js"></script>
+    <script>
+      $(document).ready(function(){
+
+          var audio_formats = ['audio/ogg',              // ogg/Vorbis,
+                               'audio/webm',             // ogg vorbis or opus?
+                               'audio/ogg; codecs=opus', // ogg/Opus
+                               'audio/mpeg',             // mp3
+                               'audio/wave',             // wav (Firefox preferred; does not work in Chrome)
+                               'audio/wav; codecs="1"',  // more WAV
+                               'audio/wav',              // wav
+                               'audio/x-wav',            // wav
+                               'audio/x-pn-wav',         // wav
+                               'audio/flac',             // flac
+                               'audio/x-flac',           // flac
+                               'audio/aac ',             // AAC/ADTS
+                               'audio/mp4',              // MP4 (firefox depends on OS decoding, so may not work on some platforms?)
+                               'audio/aacp'              // ADTS
+                              ];
+
+          console.max('Document ready, creating an audio object.');
+
+          var audio_object = document.createElement('audio');
+
+          var ua_string = 'UserAgent'.padEnd(25) + '| ' + navigator.userAgent + '\n';
+          ua_string += 'Platform'.padEnd(25) + '| ' + navigator.platform + '\n\n';
+
+          console.max(ua_string);
+          $('#sound_data').html(ua_string);
+
+          for (var mime_type in audio_formats) {
+
+              var is_supported = audio_object.canPlayType(audio_formats[mime_type]);
+
+              if (is_supported == '') {
+                  is_supported = 'nope';
+              }
+
+              var supported_string = audio_formats[mime_type].padEnd(25) + '| ' + is_supported + '\n';
+              console.max(supported_string);
+              $('#sound_data').append(supported_string);
+          }
+      });
+    </script>
+  </head>
+  <body>
+    <pre id="sound_data">
+
+    </pre>
+  </body>
+</html>

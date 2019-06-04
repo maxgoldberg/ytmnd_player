@@ -23,6 +23,9 @@ The last active development spurt on YTMND was in 2011 on Firefox. HTML5 audio s
 #### Relevant Links:
 
 1. [HTML5 Audio Support](https://caniuse.com/#feat=audio)
+2. https://developer.mozilla.org/en-US/docs/Web/HTML/Supported_media_formats
+3. https://en.wikipedia.org/wiki/HTML5_audio#Supported_audio_coding_formats
+4. https://developer.mozilla.org/en-US/docs/Web/Guide/Audio_and_video_delivery/Cross-browser_audio_basics#Audio_Codec_Support
 
 ## Autoplay
 Somewhat unsurprisingly, modern browsers don't like website to just start playing audio as soon as a page loads. Last week I hacked in a temporary workaround so when autoplay is blocked, a play button is shown. Ideally we want this to be more versatile and work better with all browsers.
@@ -38,6 +41,8 @@ Somewhat unsurprisingly, modern browsers don't like website to just start playin
 ## Gapless Playback
 One major issue we're currently seeing is gapless audio on HTML5 is not working correctly. I see this as a must-have feature, and it was one of the reasons why we so heavily relied on Flash. I think we'll need to make quite a few tech demos to try and nail this down on all browsers/mobile.
 
+*Status:* Appears to be working well with AudioContext().
+
 #### Relevant Links:
 1. [Good test site which should have perfect gapless WAV audio](http://banned.ytmnd.com)
 2. https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
@@ -45,6 +50,7 @@ One major issue we're currently seeing is gapless audio on HTML5 is not working 
 4. https://lists.w3.org/Archives/Public/public-whatwg-archive/2014Oct/0238.html
 5. https://github.com/regosen/Gapless-5
 6. https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode/loop
+7. https://wiki.hydrogenaud.io/index.php?title=Gapless_playback#Why_gaps_occur
 
 ## Synchronization
 One of the original reasons for the Flash preloader was to achieve perfect sync between sound and visuals. Many sites used to synchronize at different speeds on different browsers, and many are probably broken on the HTML5 preloader. This area needs more exploration, as I haven't really done much research into _how_ broken this is. It is much less noticeable on high-speed connections, but testing needs to be done on both slow connections and mobile.
