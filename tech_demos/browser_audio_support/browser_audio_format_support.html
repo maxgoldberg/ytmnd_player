@@ -18,7 +18,11 @@
                                'audio/x-flac',           // flac
                                'audio/aac ',             // AAC/ADTS
                                'audio/mp4',              // MP4 (firefox depends on OS decoding, so may not work on some platforms?)
-                               'audio/aacp'              // ADTS
+                               'audio/aacp',             // ADTS
+                               'audio/x-caf',            // Core audio format, garbage apple format which may contain ogg/opus?
+                               'audio/vorbis',           // Vorbis with no container,
+                               'audio/opus',             // Opus with no container,
+                               'audio/speex',            // Speex
                               ];
 
           console.max('Document ready, creating an audio object.');

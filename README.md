@@ -51,6 +51,7 @@ One major issue we're currently seeing is gapless audio on HTML5 is not working 
 5. https://github.com/regosen/Gapless-5
 6. https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode/loop
 7. https://wiki.hydrogenaud.io/index.php?title=Gapless_playback#Why_gaps_occur
+8. http://lame.sourceforge.net/tech-FAQ.txt
 
 ## Synchronization
 One of the original reasons for the Flash preloader was to achieve perfect sync between sound and visuals. Many sites used to synchronize at different speeds on different browsers, and many are probably broken on the HTML5 preloader. This area needs more exploration, as I haven't really done much research into _how_ broken this is. It is much less noticeable on high-speed connections, but testing needs to be done on both slow connections and mobile.
