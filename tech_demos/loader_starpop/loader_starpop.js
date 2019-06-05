@@ -191,7 +191,13 @@ function loadToPercent(percent)
     if (percent > 100) percent = 100;
     
     desiredFrame = ((percent / 100) * (numFrames - 1)) | 0;
-    console.log(percent + "%, frame = " + desiredFrame);
+//    console.log(percent + "%, frame = " + desiredFrame);
+
+    if (desiredFrame < exportRoot.currentFrame) {
+	// We've gone backwards, rewind
+	exportRoot.gotoAndPlay(desiredFrame);
+	return;
+    }
     
     // resume animation if we're below that point
     if (exportRoot.currentFrame < desiredFrame) {
