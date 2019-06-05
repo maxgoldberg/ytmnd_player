@@ -2,6 +2,9 @@
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="../common.js"></script>
+    <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+    <script src="../loader_starpop/loader_starpop.js"></script>
+    <script src="../loader_starpop/loader_starpop_anim.js"></script>
     <script>
       $(document).ready(function(){
 
@@ -53,6 +56,8 @@
        }
 
        $('.load_percent').html('(' + global_percent + '%)');
+
+       loadToPercent(global_percent);
 
        console.max(global_percent);
       }, 50);
@@ -108,6 +113,13 @@
          z-index: 4;
       }
 
+      #animation_container {
+/*         position:absolute; */
+         margin:auto;
+         left:0;right:0;
+         top:0;bottom:0;
+      }
+
     </style>
   </head>
   <body bgcolor="black">
@@ -158,6 +170,14 @@
         <img class="logo_mask" src="./logo_mask.png" />
         <img class="logo_text" src="./logo_text.png" />
         <img class="logo_flare" src="./logo_flare.png" />
+      </div>
+    </div>
+    <div class="loader_logo_container">
+      <div>davidc is great, oh yes he is <span class="load_percent"></span></div>
+      <div class="loader_logo" id="animation_container" style="background-color:rgba(255, 255, 255, 0.00); width:440px; height:326px">
+	<canvas id="canvas" width="440" height="326" style="position: absolute; display: block; background-color:rgba(255, 255, 255, 0.00);"></canvas>
+	<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:440px; height:326px; position: absolute; left: 0px; top: 0px; display: block;">
+	</div>
       </div>
     </div>
   </body>

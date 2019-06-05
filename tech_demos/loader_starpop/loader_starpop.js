@@ -155,8 +155,20 @@ function handleComplete(evt,comp) {
 			stage.tickOnUpdate = true;		
 		}
 	}
-	makeResponsive(true,'both',false,1);	
-	AdobeAn.compositionLoaded(lib.properties.id);
+//	makeResponsive(false,'both',true,1);
+    // DC:
+
+    var scaleX = canvas.width / lib.properties.width;
+    var scaleY = canvas.height / lib.properties.height;
+    var scale = Math.min(scaleX, scaleY);
+
+    stage.scaleX = scale;
+    stage.scaleY = scale;
+    stage.tickOnUpdate = false;
+    stage.update();
+    stage.tickOnUpdate = true;
+
+    AdobeAn.compositionLoaded(lib.properties.id);
 	fnStartAnimation();
 }
 
@@ -165,8 +177,6 @@ function handleComplete(evt,comp) {
 var numFrames = 200;
 
 var desiredFrame = 0;
-
-createjs.Ticker.addEventListener("tick", handleTick);
 
 function handleTick()
 {
@@ -199,7 +209,11 @@ function loadAtPercent(percent)
     exportRoot.gotoAndStop(desiredFrame)
 }
 
+oldOnLoad = window.onload;
 window.onload = function(e){
     init();
+
+    createjs.Ticker.addEventListener("tick", handleTick);
+
+    if (oldOnLoad) oldOnLoad();
 }
-						       
