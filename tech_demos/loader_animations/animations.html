@@ -1,0 +1,164 @@
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="../common.js"></script>
+    <script>
+      $(document).ready(function(){
+
+      var global_percent = 0;
+      var set_loader_progress = {};
+
+      set_loader_progress['masking'] = function (percent) {
+        if (percent == 100) { $('#simple_masking .logo_flare').show(); }
+        $('#simple_masking .logo_mask').css('-webkit-mask-image', 'linear-gradient(to bottom, transparent ' + (100 - percent) + '%, black ' + (100 - percent) + '%)');
+      }
+
+      set_loader_progress['masking_transparency'] = function (percent) {
+        if (percent == 100) { $('#simple_masking_with_transparency .logo_flare').show(); }
+        $('#simple_masking_with_transparency .logo_mask').css('-webkit-mask-image', 'linear-gradient(to bottom, transparent ' + (100 - percent - 12) + '%, black ' + (100 - percent) + '%)');
+      }
+
+      set_loader_progress['simple_transparency'] = function (percent) {
+        if (percent == 100) { $('#simple_transparency .logo_flare').show(); }
+        $('#simple_transparency .logo_mask').css('opacity', percent/100);
+        $('#simple_transparency .logo_empty').css('opacity', percent/100);
+        $('#simple_transparency .logo_text').css('opacity', (percent/100) + 0.4);
+      }
+
+      set_loader_progress['masking_fade_in'] = function (percent) {
+        if (percent == 100) { $('#masking_fade_in .logo_flare').show(); }
+        $('#masking_fade_in .logo_mask').css('opacity', percent/100);
+        $('#masking_fade_in .logo_empty').css('opacity', percent/100);
+        $('#masking_fade_in .logo_text').css('opacity', (percent/100) + 0.4);
+        $('#masking_fade_in .logo_mask').css('-webkit-mask-image', 'linear-gradient(to bottom, transparent ' + (100 - percent) + '%, black ' + (100 - percent) + '%)');
+      }
+
+      set_loader_progress['masking_fade_in_transparency'] = function (percent) {
+        if (percent == 100) { $('#masking_fade_in_transparency .logo_flare').show(); }
+        $('#masking_fade_in_transparency .logo_mask').css('opacity', percent/100);
+        $('#masking_fade_in_transparency .logo_empty').css('opacity', percent/100);
+        $('#masking_fade_in_transparency .logo_text').css('opacity', (percent/100) + 0.4);
+        $('#masking_fade_in_transparency .logo_mask').css('-webkit-mask-image', 'linear-gradient(to bottom, transparent ' + (100 - percent - 12) + '%, black ' + (100 - percent) + '%)');
+      }
+
+      setInterval(() => {
+       if (global_percent >= 100) {
+         return false;
+       }
+       global_percent++;
+
+
+       for (var i in set_loader_progress) {
+         set_loader_progress[i](global_percent);
+       }
+
+       $('.load_percent').html('(' + global_percent + '%)');
+
+       console.max(global_percent);
+      }, 50);
+
+      });
+    </script>
+    <style>
+
+      body {
+        background-color: black;
+        color: white;
+        font-family: Helvetica;
+      }
+
+      .loader_logo_container {
+        width: 440px;
+        float: left;
+        height: 356px;
+        overflow: hidden;
+      }
+
+      .loader_logo {
+        width:  440px;
+        height: 326px;
+      }
+
+      .logo_empty {
+        z-index: 1;
+      }
+
+      .logo_mask {
+        z-index:2;
+        position: relative;
+        top: -100%;
+      }
+
+      #simple_masking .logo_mask, #simple_masking_with_transparency .logo_mask {
+        -webkit-mask-image: linear-gradient(to bottom, transparent 95%, black 100%);
+        mask-image: linear-gradient(to bottom, transparent 95%, black 100%);
+      }
+
+
+      .logo_text {
+        position:relative;
+         top: -200%;
+        z-index: 3;
+      }
+
+      .logo_flare {
+         display: none;
+         position: relative;
+         top: -300%;
+         z-index: 4;
+      }
+
+    </style>
+  </head>
+  <body bgcolor="black">
+    <div class="loader_logo_container">
+    <div>Simple Masking <span class="load_percent"></span></div>
+      <div class="loader_logo" id="simple_masking">
+        <img class="logo_empty" src="./logo_empty.png" />
+        <img class="logo_mask" src="./logo_mask.png" />
+        <img class="logo_text" src="./logo_text.png" />
+        <img class="logo_flare" src="./logo_flare.png" />
+      </div>
+    </div>
+
+    <div class="loader_logo_container">
+      <div>Simple Masking w/ Transparency <span class="load_percent"></span></div>
+      <div class="loader_logo" id="simple_masking_with_transparency">
+        <img class="logo_empty" src="./logo_empty.png" />
+        <img class="logo_mask" src="./logo_mask.png" />
+        <img class="logo_text" src="./logo_text.png" />
+        <img class="logo_flare" src="./logo_flare.png" />
+      </div>
+    </div>
+
+    <div class="loader_logo_container">
+      <div>Simple Fade In <span class="load_percent"></span></div>
+      <div class="loader_logo" id="simple_transparency">
+        <img class="logo_empty" src="./logo_empty.png" />
+        <img class="logo_mask" src="./logo_mask.png" />
+        <img class="logo_text" src="./logo_text.png" />
+        <img class="logo_flare" src="./logo_flare.png" />
+      </div>
+    </div>
+
+    <div class="loader_logo_container">
+      <div>Masking + Fade In <span class="load_percent"></span></div>
+      <div class="loader_logo" id="masking_fade_in">
+        <img class="logo_empty" src="./logo_empty.png" />
+        <img class="logo_mask" src="./logo_mask.png" />
+        <img class="logo_text" src="./logo_text.png" />
+        <img class="logo_flare" src="./logo_flare.png" />
+      </div>
+    </div>
+
+    <div class="loader_logo_container">
+      <div>Masking + Transparency + Fade In <span class="load_percent"></span></div>
+      <div class="loader_logo" id="masking_fade_in_transparency">
+        <img class="logo_empty" src="./logo_empty.png" />
+        <img class="logo_mask" src="./logo_mask.png" />
+        <img class="logo_text" src="./logo_text.png" />
+        <img class="logo_flare" src="./logo_flare.png" />
+      </div>
+    </div>
+  </body>
+</html>

@@ -30,18 +30,33 @@
           console.max('can_autoplay:', can_autoplay);
 
           /**
+           * One relatively straightforward way of bypassing autoplay limitations is to simply reload the page.
+           *
+           * This appears to currently only work on desktop versions of Chrome.
+           */
+
+          if (can_autoplay == false && sessionStorage.getItem("reloaded_for_audio") == null) {
+            setTimeout(()=>{
+                sessionStorage.setItem("reloaded_for_audio", true);
+                window.location.reload();
+              }, 100);
+          }
+
+          console.max(sessionStorage.getItem("reloaded_for_audio"));
+
+          /**
            * Suspend the AudioContext, we can start it back up later.
            */
 
           audio_context.suspend();
 
           /**
-           * Load a gapless sound file with an XMLHttpRequest.
+           * Load a gapless sound with an XMLHttpRequest.
+           *
+           * Gapless MP3: audio_xhr.open('GET', 'http://content.ytmnd.com/assets/sound/Blues-Loop.mp3', true);
            */
 
-          //audio_xhr.open('GET', 'http://users.content.ytmnd.com/b/d/5/bd5a043ff611270fda719e5b10c72a2a.wav', true);
-          //audio_xhr.open('GET', 'http://content.ytmnd.com/assets/sound/gapless/maxloop.ogg', true);
-          audio_xhr.open('GET', 'http://content.ytmnd.com/assets/sound/gapless/maxloop.flac', true);
+          audio_xhr.open('GET', 'http://users.content.ytmnd.com/b/d/5/bd5a043ff611270fda719e5b10c72a2a.wav', true);
           audio_xhr.responseType = 'arraybuffer';
 
           /**
