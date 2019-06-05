@@ -6,9 +6,11 @@
     <script src="../loader_starpop/loader_starpop.js"></script>
     <script src="../loader_starpop/loader_starpop_anim.js"></script>
     <script>
-      $(document).ready(function(){
 
       var global_percent = 0;
+
+      $(document).ready(function(){
+
       var set_loader_progress = {};
 
       set_loader_progress['masking'] = function (percent) {
@@ -180,5 +182,8 @@
 	</div>
       </div>
     </div>
+
+    <br clear="all" /><br/>
+    <button onclick="global_percent = 0;">Restart</button>
   </body>
 </html>
