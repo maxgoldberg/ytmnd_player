@@ -36,12 +36,12 @@
           audio_context.suspend();
 
           /**
-           * Load a gapless sound with an XMLHttpRequest.
-           *
-           * Gapless MP3: audio_xhr.open('GET', 'http://content.ytmnd.com/assets/sound/Blues-Loop.mp3', true);
+           * Load a gapless sound file with an XMLHttpRequest.
            */
 
-          audio_xhr.open('GET', 'http://users.content.ytmnd.com/b/d/5/bd5a043ff611270fda719e5b10c72a2a.wav', true);
+          //audio_xhr.open('GET', 'http://users.content.ytmnd.com/b/d/5/bd5a043ff611270fda719e5b10c72a2a.wav', true);
+          //audio_xhr.open('GET', 'http://content.ytmnd.com/assets/sound/gapless/maxloop.ogg', true);
+          audio_xhr.open('GET', 'http://content.ytmnd.com/assets/sound/gapless/maxloop.flac', true);
           audio_xhr.responseType = 'arraybuffer';
 
           /**
