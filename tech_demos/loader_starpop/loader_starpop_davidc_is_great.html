@@ -214,7 +214,15 @@ function loadAtPercent(percent)
 
 function begin()
 {
-    loadToPercent(100);
+    //    loadToPercent(100);
+    global_percent = 0;
+    setInterval(() => {
+	if (global_percent > 100) {
+	    return false;
+	}
+	global_percent++;
+	loadToPercent(global_percent);
+    }, 50);
 }
 						       
 						       
