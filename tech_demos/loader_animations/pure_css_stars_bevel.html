@@ -1,0 +1,114 @@
+<html>
+  <head>
+    <meta charset="ISO-8859-1" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="../common.js"></script>
+    <style>
+#ytmnd_logo_div {
+  width: 40vw;
+}
+
+#logo_svg {
+}
+
+body {
+ background-color: black;
+  display: grid;
+  height: 100vh;
+  margin: 0;
+  place-items: center center;
+}
+
+
+</style>
+<script>
+var global_percent = 0;
+
+$(document).ready(function(){
+    var star_animation_timing = {
+      flare_bottom: 88,
+      flare_top: 80,
+      star_1_s: 66,
+      star_2_s: 51,
+      star_3_s: 68,
+      star_4_s: 25,
+      star_5_s: 43,
+      star_6_s: 55,
+      star_7_s: 64,
+      star_8_s: 86,
+      star_10_s: 67,
+      star_11_s: 22,
+      star_12_s: 49,
+      star_13_s: 57,
+      star_14_m: 27,
+      star_15_m: 39,
+      star_16_m: 70,
+      star_17_m: 33,
+      star_18_m: 53,
+      star_19_m: 75,
+      star_20_m: 82,
+      star_21_m: 63,
+      star_22_m: 35,
+      star_23_m: 19,
+      star_24_l: 57,
+      star_25_l: 43,
+      star_26_s_notrail: 54,
+      star_27_s_notrail: 78,
+      star_28_s_notrail: 52,
+      star_29_s_notrail: 64,
+    };
+
+    $('#logo_svg').ready(function(){
+
+    var percentage = 0;
+    var anim_timer = null;
+    var animation_cycler = function () {
+      var svg = document.getElementById('logo_svg').contentDocument;
+
+      if (svg == null || typeof svg.getElementById != 'function') {
+        return false;
+      }
+
+      if (percentage < global_percent) {
+        for (var id in star_animation_timing) {
+          if (star_animation_timing[id] <= global_percent) {
+            var star = svg.getElementById(id);
+
+            star.style.animationPlayState = 'running';
+            console.max(id, star.style.animationPlayState);
+          }
+          percentage = global_percent;
+        }
+      }
+      else if (percentage >= 100) {
+        svg.getElementById('flare_top').style.display = 'block';
+        svg.getElementById('flare_bottom').style.display = 'block';
+        clearInterval(anim_timer);
+      }
+    }
+
+    anim_timer = setInterval(animation_cycler, 100);
+
+
+    setInterval(function(){
+        global_percent += 5;
+
+        if (global_percent > 100) {
+          global_percent = 100;
+        }
+
+        $('#percentage').html(global_percent);
+      }, 50);
+    });
+  });
+
+</script>
+</head>
+<body>
+
+<div id="ytmnd_logo_div">
+  <object id="logo_svg" type="image/svg+xml" data="ytmnd_logo_bevel.svg"></object>
+  <div style="color: white"><span id="percentage">0</span>%</div>
+</div>
+</body>
+</html>
