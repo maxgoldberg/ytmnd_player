@@ -2,6 +2,8 @@
   <head>
     <meta charset="ISO-8859-1" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="../common.js"></script>
     <style>
 #ytmnd_logo_div {
@@ -19,12 +21,18 @@ body {
   place-items: center center;
 }
 
+#buttons {
+    color: white;
+}
+
 
 </style>
 <script>
 var global_percent = 0;
+var loader_ready = false;
+var anim_timer = null;
+var slider_ignore = false;
 
-$(document).ready(function(){
     var star_animation_timing = {
       flare_bottom: 88,
       flare_top: 80,
@@ -58,57 +66,147 @@ $(document).ready(function(){
       star_29_s_notrail: 64,
     };
 
-    $('#logo_svg').ready(function(){
+var current_percent = 0;
+function animation_cycler()
+{
+  var svg = document.getElementById('logo_svg').contentDocument;
 
-    var percentage = 0;
-    var anim_timer = null;
-    var animation_cycler = function () {
-      var svg = document.getElementById('logo_svg').contentDocument;
+  if (svg == null || typeof svg.getElementById != 'function') {
+    return false;
+  }
 
-      if (svg == null || typeof svg.getElementById != 'function') {
-        return false;
+  if (current_percent < global_percent) {
+    for (var id in star_animation_timing) {
+      if (star_animation_timing[id] <= global_percent) {
+        var star = svg.getElementById(id);
+
+        star.style.animationPlayState = 'running';
+        console.max(id, star.style.animationPlayState);
       }
-
-      if (percentage < global_percent) {
-        for (var id in star_animation_timing) {
-          if (star_animation_timing[id] <= global_percent) {
-            var star = svg.getElementById(id);
-
-            star.style.animationPlayState = 'running';
-            console.max(id, star.style.animationPlayState);
-          }
-          percentage = global_percent;
-        }
-      }
-      else if (percentage >= 100) {
-        svg.getElementById('flare_top').style.display = 'block';
-        svg.getElementById('flare_bottom').style.display = 'block';
-        clearInterval(anim_timer);
+      current_percent = global_percent;
+    }
+  }
+  else if (current_percent >= 100) {
+    // Wait until the stars have all finished before we animate the flare!
+    for (var id in star_animation_timing) {
+      var star = svg.getElementById(id);
+      if (star.style.animationPlayState == 'running') {
+//	console.max("oi!", "waiting for stars to finish before doing flare");
+//	return;
       }
     }
+//    console.max("hey!", "stars are all done, running flare");
 
-    anim_timer = setInterval(animation_cycler, 100);
+    svg.getElementById('flare_top').style.display = 'block';
+    svg.getElementById('flare_bottom').style.display = 'block';
+    clearInterval(anim_timer);
+  }
+
+  // already requested a percent before we were fully loaded, kick things off for real
+  if (!anim_timer && global_percent > 0) {
+    setLoaderPercent(global_percent);
+  }
+}
 
 
-    setInterval(function(){
-        global_percent += 5;
+$('#logo_svg').ready(function() {
+  loader_ready = true;
+});
 
-        if (global_percent > 100) {
-          global_percent = 100;
-        }
-
-        $('#percentage').html(global_percent);
-      }, 50);
-    });
+$(document).ready(function() {
+  $('#pos_slider').slider({
+    min: 0,
+    max: 100,
+    step: 1,
+    slide: function (e, ui) {
+      if (ui.value < global_percent) {
+	e.preventDefault();
+      }
+      else {
+	if (global_percent != ui.value) {
+	  setLoaderPercent(ui.value);
+	}
+      }
+    }
   });
+});
 
+function setLoaderPercent(loader_percent)
+{
+  if (loader_percent > 100) {
+    loader_percent = 100;
+  }
+  global_percent = loader_percent;
+
+  if (loader_ready) {
+    if (!anim_timer) {
+      anim_timer = setInterval(animation_cycler, 100);
+    }
+
+    $('#percentage').html(global_percent);
+    $('#pos_slider').slider('value', global_percent);
+  }
+}
+
+function testReset()
+{
+  loader_ready = false
+  current_percent = 0;
+  global_percent = 0;
+  $('#percentage').html(0);
+  $('#pos_slider').slider('value', 0);
+  $('#logo_svg').attr('data', 'ytmnd_logo_bevel.svg');
+    
+  $('#logo_svg').ready(function() {
+    loader_ready = true;
+  });
+}
+
+
+var autoInterval = null;
+function testAuto(start, end, duration)
+{
+  if (autoInterval) {
+    clearInterval(autoInterval)
+  }
+
+  var interval = (duration) / (end - start);
+  setLoaderPercent(start);
+  
+  autoInterval = setInterval(function(){
+    setLoaderPercent(global_percent + 1);
+    if (global_percent >= end) {
+      clearInterval(autoInterval);
+    }
+  }, interval);
+}
+  
 </script>
+
+<Style type="text/css">
+  .ui-draggable, .ui-droppable {
+  background-position: top;
+  }</style>
 </head>
 <body>
 
+  <div>
 <div id="ytmnd_logo_div">
-  <object id="logo_svg" type="image/svg+xml" data="ytmnd_logo_bevel.svg"></object>
+  <object id="logo_svg" type="image/svg+xml" data="ytmnd_logo_bevel.svg" style="width: 819px; height: 531px;"></object>
   <div style="color: white"><span id="percentage">0</span>%</div>
 </div>
+
+
+<div id="pos_slider"></div>
+</div>
+
+  <div id="buttons">
+  <button onclick="testReset();">Reset</button>
+    Smooth tests:
+    <button onclick="testAuto(0, 100, 10*1000);">Slow load (10s)</button>
+    <button onclick="testAuto(0, 100, 1*1000);">Fast load (1s)</button>
+    <button onclick="testAuto(0, 100, 0.1*1000);">Super-fast load (0.1s)</button>
+    </div>
+
 </body>
 </html>

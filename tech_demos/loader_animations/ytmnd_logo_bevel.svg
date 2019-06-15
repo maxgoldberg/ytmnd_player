@@ -13,10 +13,10 @@
     }
 
     @keyframes flare_scale {
-      0%   { transform: scale(0);     opacity: 0.5;  }
-      50%  { transform: scale(1.0);   opacity: 0.75; }
-      85%  { transform: scale(1.5);  opacity: 1;  }
-      100% { transform: scale(1.00);  opacity: 1; }
+      0%   { transform: scale(0) rotate(-45deg);     opacity: 0.5;  }
+      50%  { transform: scale(0.5) rotate(-22.5deg);   opacity: 0.75; }
+/*      85%  { transform: scale(1.5) rotate(-6.75deg); opacity: 1; ; } */
+      100% { transform: scale(1.0) rotate(0deg);  opacity: 1; }
     }
 
     @keyframes text_pulse {
@@ -48,8 +48,7 @@
     }
 
     #flare_top, #flare_bottom {
-      animation-duration: 1000ms, 8000ms;
-      animation-delay: 200ms, 1200ms;
+      animation-duration: 500ms, 4000ms;
       animation-name: flare_scale, flare_spin;
       transform-box: fill-box;
       animation-timing-function: linear;
@@ -58,6 +57,14 @@
       animation-iteration-count: 1, infinite;
       display: none;
       opacity: 0;
+    }
+
+    #flare_top {
+      animation-delay: 0ms, 500ms;
+    }
+
+    #flare_bottom {
+      animation-delay: 400ms, 900ms;
     }
 
     .logo_stars {
