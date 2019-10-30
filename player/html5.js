@@ -222,7 +222,7 @@
       }
 
       /**
-       * Some browsers don't loop when passed the 'loop' property, so this is a hack to fix that.
+       * Some browsers don't loop when passed the 'loop' property, so this is a hack to fix that.  It's a hack.
        */
 
       if (typeof this.audio_handle.loop != 'boolean' || is_iOS) {
